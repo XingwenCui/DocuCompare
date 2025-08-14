@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
+from rembg import remove
 
+# 去除背景（百边填充）
+def rembgImg(image):
+    return remove(image)
 
 # 固定尺寸
 def resizeImg(image, height=1200):
@@ -88,9 +92,13 @@ def warpImage(image, box):
 
 def clip(filepath, outpath):
     image = cv2.imread(filepath)
-    ratio = 1200 / image.shape[0]
+
+    # 白边填充背景
+    image = rembgImg(image)
+
     # 尺寸变化
     img = resizeImg(image)
+    ratio = 1200 / image.shape[0]   # 放缩尺寸
     # 边缘检测
     binary_img = getCanny(img)
     # 最大轮廓检测
@@ -106,4 +114,4 @@ def clip(filepath, outpath):
     cv2.imwrite(outpath, warped)
 
 if __name__ == '__main__':
-    clip('20250813110133_6.jpg','20250814.jpg')
+    clip('20250813110133_6.jpg','20250815.jpg')
