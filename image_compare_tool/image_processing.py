@@ -1,6 +1,17 @@
-from rembg import remove
 import cv2
 import numpy as np
+import rfc3987
+from rembg import remove
+from rembg.session_factory import new_session
+import os
+import sys
+
+def resource_path(relative_path):
+    """ 获取 PyInstaller 打包后的资源路径 """
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
 
 # 兼容中文路径
 def imread_unicode(path):
@@ -8,7 +19,7 @@ def imread_unicode(path):
 
 # 去除背景（白边填充）
 def rembgImg(image):
-    return remove(image)
+    return remove(image, session=new_session(model_name='u2net_custom' , model_path=resource_path("models/u2net.onnx")))
 
 
 # 固定尺寸

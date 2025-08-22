@@ -1,4 +1,3 @@
-from rembg import remove
 import sys
 from PyQt5.QtWidgets import QApplication
 from gui import ImageCompareApp

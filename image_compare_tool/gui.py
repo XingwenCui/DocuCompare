@@ -1,5 +1,3 @@
-import os
-import cv2
 import shutil
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QLabel, QVBoxLayout, QFileDialog,
@@ -70,11 +68,11 @@ class ImageCompareApp(QWidget):
     # 上传图片组 I
     def upload_images_I(self):
         files, _ = QFileDialog.getOpenFileNames(
-            self, "选择图片或PDF I", "", "Images/PDF (*.png *.jpg *.jpeg *.pdf)"
+            self, "选择图片或PDF I", "", "Images/PDF (*.png *.jpg *.jpeg *.pdf *.docx)"
         )
         if files:
             for f in files:
-                if f.lower().endswith(".pdf"):
+                if f.lower().endswith(".pdf") or f.lower().endswith(".docx"):
                     img_paths = pdf_to_images(f, self.temp_dirs)
                     self.images_I.extend(img_paths)
                     self.list_I.addItems(img_paths)
@@ -85,11 +83,11 @@ class ImageCompareApp(QWidget):
     # 上传图片组 II
     def upload_images_II(self):
         files, _ = QFileDialog.getOpenFileNames(
-            self, "选择图片或PDF II", "", "Images/PDF (*.png *.jpg *.jpeg *.pdf)"
+            self, "选择图片或PDF II", "", "Images/PDF (*.png *.jpg *.jpeg *.pdf *.docx)"
         )
         if files:
             for f in files:
-                if f.lower().endswith(".pdf"):
+                if f.lower().endswith(".pdf") or f.lower().endswith(".docx"):
                     img_paths = pdf_to_images(f, self.temp_dirs)
                     self.images_II.extend(img_paths)
                     self.list_II.addItems(img_paths)

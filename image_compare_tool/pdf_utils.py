@@ -4,13 +4,31 @@ import tempfile
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from PIL import Image
+from win32com import client
+
+def word_to_pdf(filepath, targetdir):
+    targetpath = os.path.join(targetdir, os.path.splitext(os.path.split(filepath)[-1])[0] + '.pdf')
+    print(targetpath)
+    word = client.Dispatch('Word.Application')
+    doc = word.Documents.Open(filepath)
+    doc.SaveAs(f"{targetpath}", FileFormat=17)
+    doc.Close()
+    word.Quit()
+    return targetpath
 
 
 def pdf_to_images(pdf_path, temp_dirs):
-    doc = fitz.open(pdf_path)
-    img_paths = []
+    filename = os.path.splitext(os.path.basename(pdf_path))
+
     temp_dir = tempfile.mkdtemp(dir=os.path.dirname(pdf_path))
     temp_dirs.append(temp_dir)
+    print(temp_dir)
+
+    if filename[1] != 'pdf':
+        pdf_path = word_to_pdf(pdf_path, temp_dir)
+
+    doc = fitz.open(pdf_path)
+    img_paths = []
 
     for page_num in range(len(doc)):
         page = doc.load_page(page_num)
